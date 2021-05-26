@@ -2,16 +2,10 @@ package com.blackdragon2447.AAMS;
 
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.util.ArrayList;
-
-import com.blackdragon2447.AAMS.obj.Pair;
 
 public class NetworkHandler {
 
 	ServerSocket serverSocket;
-	Connection connection;
-	Thread thread;
-	ArrayList<Connection> connections = new ArrayList<Connection>();
 	
 	public NetworkHandler() {
 		try {
@@ -26,13 +20,10 @@ public class NetworkHandler {
 		while(true) {
 			System.out.println("waiting for connection");
 			try {
-				connection = new Connection(serverSocket.accept());
+				new Thread(new Connection(serverSocket.accept())).start();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			connections.add(connection);
-			thread = new Thread(connection);
-			thread.start();
 			System.out.println("connected");
 		}
 	}
